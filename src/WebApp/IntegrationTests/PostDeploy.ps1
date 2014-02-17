@@ -1,4 +1,1 @@
-﻿pwd
-cd $OctopusParameters["Octopus.Action.Package.CustomInstallationDirectory"]
-pwd
-$OctopusParameters
+﻿.\nunit-console.exe .\IntegrationTests.dll \out=results.xml
