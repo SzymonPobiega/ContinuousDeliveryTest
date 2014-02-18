@@ -1,1 +1,2 @@
-﻿.\nunit-console.exe .\IntegrationTests.dll /out=results.xml
+﻿.\nunit-console.exe .\IntegrationTests.dll
+Copy-Item TestResult.xml C:\Projects\ContinuousDeliveryTest-TestResults
