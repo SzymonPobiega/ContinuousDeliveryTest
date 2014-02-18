@@ -69,6 +69,7 @@
       <Link>nunit-console.exe.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="ImportTestResult.proj" />
     <None Include="packages.config" />
     <None Include="PostDeploy.ps1">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
