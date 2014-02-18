@@ -6,7 +6,7 @@
           DestinationFiles="TestResult.xml" ContinueOnError="false" />
     <Message Text="Done." />
     <Message
-           Text="##teamcity[importData type='nunit' Path='TestResults.xml']"
+           Text="##teamcity[importData type='nunit' path='TestResults.xml']"
            Importance="High"/>
   </Target>
 </Project>
