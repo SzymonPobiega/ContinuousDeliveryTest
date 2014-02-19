@@ -7,10 +7,10 @@ using NUnit.Framework;
 namespace IntegrationTests
 {
     [TestFixture]
-    public class SampleTestFixture
+    public class SampleIntegrationTestFixture
     {
         [Test]
-        public void SampleTest()
+        public void SampleIntegrationTest()
         {
             
         }
