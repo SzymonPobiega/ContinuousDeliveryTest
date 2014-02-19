@@ -3,7 +3,7 @@
   <Target Name="ImportTestResults">
     <Message Text="Downloading test results file"/>
     <Copy SourceFiles="\\PN-SPOBIEGA-01\ContinuousDeliveryTest-TestResults\TestResult.xml"
-          DestinationFiles="$(teamcity.build.checkoutDir)\TestResult.xml" ContinueOnError="false" />
+          DestinationFiles="$(teamcity_build_checkoutDir)\TestResult.xml" ContinueOnError="false" />
     <Message Text="Done." />
     <Message
            Text="##teamcity[importData type='nunit' path='TestResults.xml']"
