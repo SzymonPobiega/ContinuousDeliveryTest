@@ -6,7 +6,7 @@
           DestinationFiles="$(teamcity_build_checkoutDir)\TestResult.xml" ContinueOnError="false" />
     <Message Text="Done." />
     <Message
-           Text="##teamcity[importData type='nunit' path='TestResult.xml']"
+           Text="##teamcity[importData type='nunit' path='TestResult.xml' parseOutOfDate='true']"
            Importance="High"/>
   </Target>
 </Project>
