@@ -13,7 +13,7 @@ namespace IntegrationTests
         [Test]
         public void SampleIntegrationTest()
         {
-            Thread.Sleep(30 * 1000);
+            Thread.Sleep(0 * 1000);
         }
     }
 }
