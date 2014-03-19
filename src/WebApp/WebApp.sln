@@ -12,6 +12,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2CA308
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{E4874A7C-233B-449A-A55C-67579C4112C7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{F45C2811-00AC-46B0-B6BB-F8EC55483BF5}"
+	ProjectSection(SolutionItems) = preProject
+		Config\log4net-console.config = Config\log4net-console.config
+		Config\log4net-web.config = Config\log4net-web.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DEV", "DEV", "{AAEC93EB-B95B-4275-B4C5-D5E95E87822A}"
+	ProjectSection(SolutionItems) = preProject
+		Config\DEV\ConnectionStrings.config = Config\DEV\ConnectionStrings.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TEST", "TEST", "{A0F80863-551B-4D3F-B55D-1FBB0CCB0AFB}"
+	ProjectSection(SolutionItems) = preProject
+		Config\TEST\ConnectionStrings.config = Config\TEST\ConnectionStrings.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PROD", "PROD", "{C8F43961-6235-4E67-91E9-903D8B52613A}"
+	ProjectSection(SolutionItems) = preProject
+		Config\PROD\ConnectionStrings.config = Config\PROD\ConnectionStrings.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{91BDD79A-824D-4BB6-AD0D-32AACF97878F}"
+	ProjectSection(SolutionItems) = preProject
+		Build\CustomTargets.targets = Build\CustomTargets.targets
+		Build\Properties.targets = Build\Properties.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendJob", "BackendJob\BackendJob.csproj", "{54E65B75-C439-4C93-BF02-02D6C35D963C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,8 +59,17 @@ Global
 		{E4874A7C-233B-449A-A55C-67579C4112C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4874A7C-233B-449A-A55C-67579C4112C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4874A7C-233B-449A-A55C-67579C4112C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E65B75-C439-4C93-BF02-02D6C35D963C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E65B75-C439-4C93-BF02-02D6C35D963C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E65B75-C439-4C93-BF02-02D6C35D963C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E65B75-C439-4C93-BF02-02D6C35D963C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AAEC93EB-B95B-4275-B4C5-D5E95E87822A} = {F45C2811-00AC-46B0-B6BB-F8EC55483BF5}
+		{A0F80863-551B-4D3F-B55D-1FBB0CCB0AFB} = {F45C2811-00AC-46B0-B6BB-F8EC55483BF5}
+		{C8F43961-6235-4E67-91E9-903D8B52613A} = {F45C2811-00AC-46B0-B6BB-F8EC55483BF5}
 	EndGlobalSection
 EndGlobal

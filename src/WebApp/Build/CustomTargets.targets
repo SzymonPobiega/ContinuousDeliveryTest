@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <CustomTargetsFolder>$(MSBuildProjectDirectory)\..\Build</CustomTargetsFolder>
+  </PropertyGroup>
+
+  <Import Project="$(CustomTargetsFolder)\Properties.targets"/>
+
+  <PropertyGroup>
+    <SlowCheetahDllPath>C:\Program Files (x86)\MSBuild\SlowCheetah\</SlowCheetahDllPath>
+
+    <!--Detect web application-->
+    <WapProjectTypeGuid>349c5851-65df-11da-9384-00065b846f21</WapProjectTypeGuid>
+    <_IsWap Condition=" '$(WapProjectTypeGuid)' != '' and '$(ProjectTypeGuids)' != '' ">$(ProjectTypeGuids.Contains($(WapProjectTypeGuid)))</_IsWap>
+    <_IsWap Condition=" '$(_IsWap)' == '' ">false</_IsWap>
+    <IsWap Condition=" '$(IsWap)' == ''">$(_IsWap)</IsWap>
+
+    <Environment Condition=" '$(Environment)'=='' ">DEV</Environment>
+    <IncludeEnvironmentNameInOutput Condition="'$(IncludeEnvironmentNameInOutput)' == ''">false</IncludeEnvironmentNameInOutput>
+    <EnvironmentNameToInclude></EnvironmentNameToInclude>
+    <EnvironmentNameToInclude Condition="'$(IncludeEnvironmentNameInOutput)' != 'false'">$(Environment).</EnvironmentNameToInclude>
+    <GlobalConfigFolder>Config</GlobalConfigFolder>
+    <LocalConfigFolder Condition=" '$(IsWap)'=='true' ">App_Config</LocalConfigFolder>
+    <LocalConfigFolder Condition=" '$(IsWap)'=='false' ">Config</LocalConfigFolder>
+    <SourceFile Condition=" '$(IsWap)'=='true' ">web.config.base</SourceFile>
+    <SourceFile Condition=" '$(IsWap)'=='false' ">app.config</SourceFile>
+    <DestinationFile Condition=" '$(IsWap)'=='true' ">$(ProjectDir)web.$(EnvironmentNameToInclude)config</DestinationFile>
+    <DestinationFile Condition=" '$(IsWap)'=='false' ">$(TargetPath).$(EnvironmentNameToInclude)config</DestinationFile>
+  </PropertyGroup>
+
+  <UsingTask TaskName="SlowCheetah.Xdt.TransformXml" AssemblyFile="$(SlowCheetahDllPath)SlowCheetah.Xdt.dll"/>
+
+  <PropertyGroup>
+    <PrepareForRunDependsOn>
+      DisableCopyAppConfig;
+      $(PrepareForRunDependsOn)
+    </PrepareForRunDependsOn>
+  </PropertyGroup>
+
+  <Target Name="DisableCopyAppConfig">
+    <ItemGroup>
+      <AppConfigWithTargetPath Remove="app.config"/>
+    </ItemGroup>
+    <Message Text="App.config copy disabled"/>
+  </Target>
+
+  <Target Name="AfterBuild" DependsOnTargets="TransformLocally;GenerateTransformsForPackaging" Condition="Exists($(SourceFile))">
+    <ItemGroup>
+      <Content Include="$(ProjectDir)web.*.config" Condition=" '$(IsWap)'=='true' "></Content>
+      <Content Remove="**\*.config" Condition=" '$(IsWap)'=='true' "></Content>
+      <Content Remove="..\**\*.config" Condition=" '$(IsWap)'=='true' "></Content>
+      <FileWrites Include="$(TargetPath).*.config" Condition=" '$(IsWap)'=='false' "></FileWrites>
+    </ItemGroup>
+    <Message Text="@(Content)"/>
+  </Target>
+
+  <Target Name="TransformLocally"
+          DependsOnTargets="Transform"
+          Condition="'$(Configuration)' != 'Release'">
+  </Target>
+
+  <Target Name="GenerateTransformsForPackaging"
+          Inputs="@Environments"
+          Outputs="%(Environments.Identity)"
+          Condition="'$(Configuration)' == 'Release'">
+    
+    <Message Text="%(Environments.Identity)" 
+             Condition="%(Environments.Identity) != '$(LocalDevEnvironment)'"/>
+    
+    <MSBuild Projects="$(MSBuildProjectFullPath)"
+             Properties="Environment=%(Environments.Identity);IncludeEnvironmentNameInOutput=true"
+             Targets="Transform"
+             Condition="%(Environments.Identity) != '$(LocalDevEnvironment)'"/>
+  </Target>
+
+  <Target Name="CopyConfigFile">
+    <Copy SourceFiles="$(SourceFile)" DestinationFiles="$(DestinationFile)" />
+  </Target>
+
+  <Target Name="Transform"
+          DependsOnTargets="GatherTransforms;CopyConfigFile"
+          Inputs="@(AllTransforms)"
+          Outputs="%(Identity).AlwaysRun"
+          Condition="Exists($(SourceFile))">
+
+    <Message Text="Using transformation file: %(AllTransforms.Identity)" />
+
+    <SlowCheetah.Xdt.TransformXml Source="$(DestinationFile)"
+                  Transform="%(AllTransforms.Identity)"
+                  Destination="$(DestinationFile)"/>
+            
+  </Target>
+
+  <Target Name="GatherTransforms">
+    <ItemGroup>
+      <SharedTransforms Include="..\$(GlobalConfigFolder)\$(Environment)\*.config"/>
+      <LocalTransforms Include="$(LocalConfigFolder)\$(Environment)\*.config"/>
+      <LocalTransforms Include="$(LocalConfigFolder)\*.$(Environment).config"/>
+      <FixedTransforms Include="@(None);@(Content)" Condition="'%(RelativeDir)' == '..\$(GlobalConfigFolder)\'"/>
+      <AllTransforms Include="@(FixedTransforms);@(SharedTransforms);@(LocalTransforms)"/>
+    </ItemGroup>
+  </Target>
+</Project>
